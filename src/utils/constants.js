@@ -1,0 +1,1 @@
+export const API_URL = "https://jumbled-good-lizard.glitch.me/"
