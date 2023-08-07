@@ -10,12 +10,14 @@ import { Link } from "react-router-dom";
 import { API_URL } from "../../utils/constants";
 import axios from "axios";
 import swal from "sweetalert";
-import { useNavigate,useParams } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
+import { useNavigate, useParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import { Container, Col, Row } from "react-bootstrap";
-import fs from 'fs';
-import  {  useEffect } from "react";
-
+import fs from "fs";
+import { useEffect } from "react";
+import Navbars2 from "../../components/navbar/navbar2";
+import Footers from "../../components/footer/footer";
+import sha256 from "sha256";
 
 const EditProduct = () => {
   const navigate = useNavigate();
@@ -27,13 +29,17 @@ const EditProduct = () => {
     stock: "",
     img: "",
     description: "",
-    id_user:""
+    id_user: "",
   });
 
   const [amount, setAmount] = useState(1);
 
-  const [isLoggedin, setIsLoggedin] = useState();
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const fileInputRef = useRef(null);
+  const [img, setimg] = useState("");
+  const [file, setFile] = useState(null);
 
+  const [isLoggedin, setIsLoggedin] = useState();
 
   useEffect(() => {
     const isLoggedinLS = localStorage.getItem("isLoggedin");
@@ -49,6 +55,62 @@ const EditProduct = () => {
 
   const [validated, setValidated] = useState(false);
 
+  const uploadImage = async () => {
+
+    if (!img) {
+      return null
+    }
+
+    const api_secret = "gC0bLHJYEdjeUrobODte5H1TzQ8";
+    const timestamp = Math.round(new Date().getTime() / 1000)
+    const signatureString = `timestamp=${timestamp}${api_secret}`
+    const signature = sha256(signatureString)
+
+    const formData = new FormData();
+    formData.append('file', img);
+    formData.append('api_key', "429798226541471");
+    formData.append('timestamp', timestamp)
+    formData.append('signature', signature)
+    // formData.append("upload_preset", "hjoaxghq");
+    // formData.append("api_secret", 'gC0bLHJYEdjeUrobODte5H1TzQ8');
+
+    const endpoint = 'https://api.cloudinary.com/v1_1/dnieojkpb/image/upload'
+    const options = {
+      method: 'POST',
+      body: formData
+    }
+
+    const response = await fetch(endpoint, options)
+    const result = await response.json()
+    console.log(result.secure_url);
+    return result.secure_url
+  }
+  
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    console.log(selectedFile);
+    const allowedTypes = ["image/png", "image/jpeg"];
+    const maxSize = 100 * 1024; // 100 KB
+
+    if (
+      selectedFile &&
+      allowedTypes.includes(selectedFile.type) &&
+      selectedFile.size <= maxSize
+    ) {
+      setimg(selectedFile);
+
+    } else {
+      setFile(null);
+      setImagePreviewUrl("");
+      event.target.value = null; // Reset input file
+      swal(
+        "Gagal",
+        "Tipe file harus berupa PNG atau JPG dengan ukuran maksimal 100 KB.",
+        "error"
+      );
+    }
+  };
+
   const handleChange = (event) => {
     setProduct({
       ...product,
@@ -56,45 +118,60 @@ const EditProduct = () => {
     });
   };
 
-  
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     setValidated(true);
-    if (form.checkValidity() === false) {
+    if (
+      isLoggedin === true &&
+      product.id_user === localStorage.getItem("userId")
+    ) {
+      if (form.checkValidity() === false) {
+        swal("Gagal", "Mohon Lengkapi Data Product .", "error");
+        event.preventDefault();
+        event.stopProgation();
+      } else {
+
+        const fileImg = await uploadImage();
+        const imgMasuk = fileImg ? fileImg : product.img //cek jika gambar tidak diupload lagi
+        const data = {
+          name: product.name,
+          price: product.price,
+          img: imgMasuk,
+          stock: product.stock,
+          description: product.description,
+          id_user: localStorage.getItem("userId"),
+        };
+        axios
+          .put(API_URL + "products/" + params.id, data)
+          .then((res) => {
+            swal("Sukses", "Sukses Daftar Product", "success");
+            navigate("/");
+          })
+          .catch((error) => {
+            console.log("Error", error);
+          });
+      }
+    } else if (
+      isLoggedin === true &&
+      product.id_user !== localStorage.getItem("userId")
+    ) {
+      swal("Gagal", "Anda Bukan Pemilik Barang Ini", "error");
+    } else {
+      localStorage.setItem("historyLink", `/details/${params.id}`);
       swal(
         "Gagal",
-        "Mohon Lengkapi Data Product .",
+        "Silahkan login terlebih dahulu untuk lanjut belanja",
         "error"
       );
-      event.preventDefault();
-      event.stopProgation();
-    }else{
-      const data = {
-        name: product.name,
-        price: product.price,
-        img: product.img,
-        stock: product.stock,
-        description: product.description,
-        id_user:localStorage.getItem("userId")
-      };
-      axios
-        .put(API_URL + "products/" + params.id, data)
-        .then((res) => {
-          swal("Sukses", "Sukses Daftar Product", "success");
-          navigate("/");
-        })
-        .catch((error) => {
-          console.log("Error", error);
-        });
-
+      navigate("/login");
     }
-   
     
-  
   };
 
   return (
+    <>
+    <Navbars2 />
     <div className={Styles.main}>
       <Row>
         <Col className={Styles.Col1}>
@@ -134,7 +211,7 @@ const EditProduct = () => {
                   type="text"
                   required
                   onChange={handleChange}
-                  value = {`${product.name}`}
+                  value={`${product.name}`}
                 />
                 <Form.Control.Feedback type="invalid">
                   Nama Product tidak boleh kosong.
@@ -147,7 +224,7 @@ const EditProduct = () => {
                   type="number"
                   required
                   onChange={handleChange}
-                  value = {`${product.price}`}
+                  value={`${product.price}`}
                 />
                 <Form.Control.Feedback type="invalid">
                   Price tidak boleh kosong.
@@ -160,10 +237,22 @@ const EditProduct = () => {
                   type="number"
                   required
                   onChange={handleChange}
-                  value = {`${product.stock}`}
+                  value={`${product.stock}`}
                 />
                 <Form.Control.Feedback type="invalid">
                   Stock tidak boleh kosong.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className={Styles.inputform}>
+                <Form.Label>Gambar</Form.Label>
+                <Form.Control
+                  id="img"
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Gambar tidak boleh kosong.
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className={Styles.inputform}>
@@ -173,7 +262,7 @@ const EditProduct = () => {
                   type="text"
                   required
                   onChange={handleChange}
-                  value = {`${product.description}`}
+                  value={`${product.description}`}
                 />
                 <Form.Control.Feedback type="invalid">
                   Deskripsi tidak boleh kosong.
@@ -192,21 +281,15 @@ const EditProduct = () => {
                 </Form.Control.Feedback>
               </Form.Group> */}
               <Button className={Styles.daftar} type="submit">
-                Tambahkan
+                Edit
               </Button>
-
-              <Link
-                to="/"
-                className={Styles.masuk}
-                style={{ textDecoration: "none" }}
-              >
-                <p className={Styles.masuk}>Sudah Punya Akun? Masuk</p>
-              </Link>
             </Form>
           </div>
         </Col>
       </Row>
     </div>
+    <Footers/>
+    </>
   );
 };
 

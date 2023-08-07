@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import AddProduct from "./pages/AddProduct";
 import EditProduct from "./pages/EditProduct";
+import ProductDetails from "./pages/ProductDetails";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/register" element={<Register/>}/>
         <Route exact path="/addproduct" element={<AddProduct/>}/>
         <Route exact path="/editProduct/:id" element={<EditProduct/>}/>
+        <Route exact path="/details/:id" element={<ProductDetails/>}/>
       </Routes>
     </BrowserRouter>
   );

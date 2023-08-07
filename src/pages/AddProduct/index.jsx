@@ -14,13 +14,15 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import { Container, Col, Row } from "react-bootstrap";
 import Navbar from "../../components/navbar/navbar";
+import sha256 from "sha256";
 
 const AddProduct = () => {
   const navigate = useNavigate();
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const fileInputRef = useRef(null);
-  const [img,setimg] = useState("");
+  const [img, setimg] = useState("");
+
 
   const [productDetails, setProductDetails] = useState({
     name: "",
@@ -28,7 +30,7 @@ const AddProduct = () => {
     stock: "",
     img: "",
     description: "",
-    id_user:""
+    id_user: ""
   });
 
   const [file, setFile] = useState(null);
@@ -42,8 +44,9 @@ const AddProduct = () => {
     });
   };
 
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    console.log(selectedFile);
     const allowedTypes = ["image/png", "image/jpeg"];
     const maxSize = 100 * 1024; // 100 KB
 
@@ -52,13 +55,8 @@ const AddProduct = () => {
       allowedTypes.includes(selectedFile.type) &&
       selectedFile.size <= maxSize
     ) {
-        const reader = new FileReader();
-        setimg(selectedFile.name);
-        reader.onloadend = () => {
-          setImagePreviewUrl(reader.result);
-          setFile(selectedFile);
-        };
-        reader.readAsDataURL(selectedFile);
+      setimg(selectedFile);
+
     } else {
       setFile(null);
       setImagePreviewUrl("");
@@ -71,47 +69,84 @@ const AddProduct = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const uploadImage = async () => {
+
+    if (!img) {
+      return null
+    }
+
+    const api_secret = "gC0bLHJYEdjeUrobODte5H1TzQ8";
+    const timestamp = Math.round(new Date().getTime() / 1000)
+    const signatureString = `timestamp=${timestamp}${api_secret}`
+    const signature = sha256(signatureString)
+
+    const formData = new FormData();
+    formData.append('file', img);
+    formData.append('api_key', "429798226541471");
+    formData.append('timestamp', timestamp)
+    formData.append('signature', signature)
+    // formData.append("upload_preset", "hjoaxghq");
+    // formData.append("api_secret", 'gC0bLHJYEdjeUrobODte5H1TzQ8');
+
+    const endpoint = 'https://api.cloudinary.com/v1_1/dnieojkpb/image/upload'
+    const options = {
+      method: 'POST',
+      body: formData
+    }
+
+    const response = await fetch(endpoint, options)
+    const result = await response.json()
+    console.log(result.secure_url);
+    return result.secure_url
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-   
+
+
     const form = event.currentTarget;
     setValidated(true);
-    if (form.checkValidity() === false || file === null) {
-      swal(
-        "Gagal",
-        "Mohon Lengkapi Data Product dan Pilih Gambar PNG atau JPG dengan Ukuran Maksimal 100 KB.",
-        "error"
-      );
-      event.preventDefault();
-      event.stopProgation();
-    } else {
-        const fileName = uuidv4() + "-" + file.name;
-       
-        const data = {
-            name: productDetails.name,
-            price: productDetails.price,
-            stock: productDetails.stock,
-            img: fileName,
-            description: productDetails.description,
-            id_user:localStorage.getItem("userId")
-          };
-          axios
-            .post(API_URL + "products", data)
-            .then((res) => {
-              swal("Sukses", "Sukses Daftar Product", "success");
-              // navigate("/");
-            })
-            .catch((error) => {
-              console.log("Error", error);
-            });
-    //   }).catch((error) => {
-    //     console.log("Error uploading file", error);
-    //   });
-    }
+    // if (form.checkValidity() === false || file === null) {
+    //   swal(
+    //     "Gagal",
+    //     "Mohon Lengkapi Data Product dan Pilih Gambar PNG atau JPG dengan Ukuran Maksimal 100 KB.",
+    //     "error"
+    //   );
+    //   event.preventDefault();
+    //   event.stopProgation();
+    // } else {
+
+
+    const fileImg = await uploadImage();
+    console.log(fileImg);
+
+
+    const data = {
+      name: productDetails.name,
+      price: productDetails.price,
+      stock: productDetails.stock,
+      img: fileImg,
+      description: productDetails.description,
+      id_user: localStorage.getItem("userId")
+    };
+
+    axios
+      .post(API_URL + "products", data)
+      .then((res) => {
+        swal("Sukses", "Sukses Daftar Product", "success");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+    // }
   };
 
+  const [uploadedImage, setUploadedImage] = useState(null);
+
+
   return (<div>
-        <Navbar  />
+    <Navbar />
     <div className={Styles.main}>
       <Row>
         <Col className={Styles.Col1}>
@@ -182,6 +217,13 @@ const AddProduct = () => {
               </Form.Group>
               <Form.Group className={Styles.inputform}>
                 <Form.Label>Gambar</Form.Label>
+                {/* <Form.File
+                  id="custom-file"
+                  label="Pilih gambar"
+                  custom
+                  onChange={handleImageUpload}
+                  accept="image/*"
+                /> */}
                 <Form.Control
                   id="img"
                   type="file"
@@ -221,19 +263,13 @@ const AddProduct = () => {
                 Tambahkan
               </Button>
 
-              <Link
-                to="/"
-                className={Styles.masuk}
-                style={{ textDecoration: "none" }}
-              >
-                <p className={Styles.masuk}>Sudah Punya Akun? Masuk</p>
-              </Link>
+             
             </Form>
           </div>
         </Col>
       </Row>
     </div>
-    </div>
+  </div>
   );
 };
 

@@ -8,6 +8,7 @@ import { API_URL } from "../../utils/constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+import Footers from "../../components/footer/footer";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ export const Login = () => {
   };
 
   return (
+    <>
     <div className="main">
       <Row className="Login">
         <Col className="Col1">
@@ -99,6 +101,8 @@ export const Login = () => {
         </Col>
       </Row>
     </div>
+      <Footers/>
+    </>
   );
 };
 

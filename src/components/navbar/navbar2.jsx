@@ -1,15 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { Navbar, Nav, Container, Modal, Form } from "react-bootstrap";
+import { Navbar, Nav, Container, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 // import PropTypes from 'prop-types';
 import "./navbar.css";
 import "../styles/Modal.css";
 
-const Navbars = ({searchParams}) => { 
+const Navbars2 = () => { 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const [isLoggedin, setIsLoggedin] = useState()
   const [userName, setUserName] = useState()
@@ -32,12 +31,19 @@ const Navbars = ({searchParams}) => {
   const showContent = () => {
     if(isLoggedin) {
       return (
-        <Nav className="justify-content-end " style={{ width: "100%" }}>
-          <Nav.Link>
-            <button className="button-request" style={{ color: "#fff", fontWeight: "400" }} onClick={handleShow}>
-              Request Barang
-            </button>
-          </Nav.Link>
+        <Nav className="" style={{ width: "100%"}}>
+          <div  className="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <ul className="navbar-nav mr-auto">
+          <Link to="/" className="mx-5">
+              <Navbar.Brand>
+                <img className="logo mx-3" src="/src/assets/img/iconwebhalal-transformed.png" width={50} alt="Navigation Pic"></img>
+                <span className="justify-content-center align-items-center" style={{ color:"white" }}>Halal E-Commerce</span>
+              </Navbar.Brand>
+            </Link>
+          </ul>
+          </div>
+          <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 justify-content-end">
+            <ul className="navbar-nav ml-auto">
           <Nav.Link as={Link} to="/addProduct" style={{ color: "#fff", fontWeight: "400" }}>
             Tambah Product
           </Nav.Link>
@@ -46,18 +52,17 @@ const Navbars = ({searchParams}) => {
               Keluar
             </button>
           </Nav.Link>
-          <Nav.Link as={Link} to="#">
+          <Nav.Link as={Link} to="#" className="ml-auto">
             <img className="profile-nav" src="/src/assets/img/fotoRajaSalman.jpg" alt="profile nav"></img>
             <span className="name-nav">{userName}</span>
           </Nav.Link>
+          </ul>
+          </div>
         </Nav>
       )
     } else {
       return (
         <Nav className="justify-content-end " style={{ width: "100%" }}>
-          <Nav.Link as={Link} to="/about" style={{ color: "#fff", fontWeight: "400" }}>
-            Tentang Kami
-          </Nav.Link>
           <Nav.Link as={Link} to="/register" style={{ color: "#fff", fontWeight: "400" }}>
             Daftar
           </Nav.Link>
@@ -71,7 +76,7 @@ const Navbars = ({searchParams}) => {
 
   return (
     <>
-      <Navbar collapseOnSelect expands="sm" className="navbars ">
+      <Navbar collapseOnSelect expands="sm" className="navbars " style={{ heigth:"fit-content" }}>
         <Container className="ml-auto navlinks">
           {showContent()}
         </Container>
@@ -81,7 +86,7 @@ const Navbars = ({searchParams}) => {
               <div className="title">Request Barang</div>
               <div className="text">Untuk request barang bisa dilakukan melalui chat.</div>
               <div className="button">
-                <a href="https://wa.me/6285263174705">
+                <a href="https://wa.me/6288221500153">
                   <img style={{ width: "125px" }} src="/src/assets/img/whatsapp.png" alt="WhatsApp Logo"></img>
                   <div className="modal-button">
                     <span>Chat Penjual</span>
@@ -92,30 +97,8 @@ const Navbars = ({searchParams}) => {
           </Modal.Body>
         </Modal>
       </Navbar>
-      <Navbar className="nav-bottoms">
-        <Container>
-          <Nav className="searchable d-flex align-items-center justify-content-center">
-            <Link to="/" className="mx-5">
-              <Navbar.Brand>
-                <img className="logo mx-3" src="/src/assets/img/iconwebhalal-transformed.png" alt="Navigation Pic"></img>
-                <span className="tokyoVibes justify-content-center align-items-center">Halal E-Commerce</span>
-              </Navbar.Brand>
-            </Link>
-            <Form className="mx-4 search">
-              <Form.Control 
-                type="search" 
-                placeholder="Search" 
-                className="search" 
-                aria-label="Search"
-                onChange={event => searchParams(event.target.value)}
-                onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-              />
-            </Form>
-          </Nav>
-        </Container>
-      </Navbar>
     </>
   );
 };
 
-export default Navbars;
+export default Navbars2;
