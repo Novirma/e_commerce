@@ -168,7 +168,7 @@ const Home = () => {
                                   <div className="mt-1" style={{ fontWeight: "700" }}>
                                     {rupiahLocale(item.price)}
                                   </div>
-                                  <div className="mt-1 mb-1">Terjual 500++</div>
+                                  <div className="mt-1 mb-1">Stock : {item.stock}</div>
                                 </div>
                               </Card>
                             </Link>
@@ -252,7 +252,7 @@ const Home = () => {
                           <div className="mt-1" style={{ fontWeight: "700" }}>
                             {rupiahLocale(item.price)}
                           </div>
-                          <div className="mt-1 mb-1">Terjual 500++</div>
+                          <div className="mt-1 mb-1">Stock : {item.stock}</div>
                         </div>
                       </Card>
                     </Link>
