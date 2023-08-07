@@ -6,6 +6,7 @@ import Styles from "./index.module.css";
 // import Productex from "../../assets/productex.png";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
+import rajaSalman from "../../assets/img/fotoRajaSalman.jpg"
 import Col from "react-bootstrap/Col";
 import swal from "sweetalert";
 import { DashCircle, Trash, PlusCircle } from "react-bootstrap-icons";
@@ -186,7 +187,7 @@ const ProductDetails = () => {
             <div className={Styles.reviewTitle}>Ulasan dari Pembeli</div>
             <div className={Styles.userBuyer}>
               <img
-                src={`/src/assets/img/fotoRajaSalman.jpg`}
+                src={rajaSalman}
                 alt="Lionel Messi"
               ></img>
               <span>Raja Salman</span>

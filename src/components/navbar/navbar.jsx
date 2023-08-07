@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react";
 import { Navbar, Nav, Container, Modal, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import rajaSalman from "../../assets/img/fotoRajaSalman.jpg"
+import logoIcon from "../../assets/img/LogoHalalECommerce-transformed.png"
+import logoWA from "../../assets/img/whatsapp.png"
 // import PropTypes from 'prop-types';
 import "./navbar.css";
 import "../styles/Modal.css";
@@ -47,7 +50,7 @@ const Navbars = ({searchParams}) => {
             </button>
           </Nav.Link>
           <Nav.Link as={Link} to="#">
-            <img className="profile-nav" src="/src/assets/img/fotoRajaSalman.jpg" alt="profile nav"></img>
+            <img className="profile-nav" src={rajaSalman} alt="profile nav"></img>
             <span className="name-nav">{userName}</span>
           </Nav.Link>
         </Nav>
@@ -82,7 +85,7 @@ const Navbars = ({searchParams}) => {
               <div className="text">Untuk request barang bisa dilakukan melalui chat.</div>
               <div className="button">
                 <a href="https://wa.me/6285263174705">
-                  <img style={{ width: "125px" }} src="/src/assets/img/whatsapp.png" alt="WhatsApp Logo"></img>
+                  <img style={{ width: "125px" }} src={logoWA} alt="WhatsApp Logo"></img>
                   <div className="modal-button">
                     <span>Chat Penjual</span>
                   </div>
@@ -97,7 +100,7 @@ const Navbars = ({searchParams}) => {
           <Nav className="searchable d-flex align-items-center justify-content-center">
             <Link to="/" className="mx-5">
               <Navbar.Brand>
-                <img className="logo mx-3" src="/src/assets/img/iconwebhalal-transformed.png" alt="Navigation Pic"></img>
+                <img className="logo mx-3" src={logoIcon} alt="Navigation Pic"></img>
                 <span className="tokyoVibes justify-content-center align-items-center">Halal E-Commerce</span>
               </Navbar.Brand>
             </Link>

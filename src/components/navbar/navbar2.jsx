@@ -2,9 +2,12 @@
 import { useState, useEffect } from "react";
 import { Navbar, Nav, Container, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import logoIcon from "../../assets/img/iconwebhalal-transformed.png"
+import rajaSalman from "../../assets/img/fotoRajaSalman.jpg"
 // import PropTypes from 'prop-types';
 import "./navbar.css";
 import "../styles/Modal.css";
+import logoWA from "../../assets/img/whatsapp.png"
 
 const Navbars2 = () => { 
   const [show, setShow] = useState(false);
@@ -36,7 +39,7 @@ const Navbars2 = () => {
             <ul className="navbar-nav mr-auto">
           <Link to="/" className="mx-5">
               <Navbar.Brand>
-                <img className="logo mx-3" src="/src/assets/img/iconwebhalal-transformed.png" width={50} alt="Navigation Pic"></img>
+                <img className="logo mx-3" src={logoIcon} width={50} alt="Navigation Pic"></img>
                 <span className="justify-content-center align-items-center" style={{ color:"white" }}>Halal E-Commerce</span>
               </Navbar.Brand>
             </Link>
@@ -53,7 +56,7 @@ const Navbars2 = () => {
             </button>
           </Nav.Link>
           <Nav.Link as={Link} to="#" className="ml-auto">
-            <img className="profile-nav" src="/src/assets/img/fotoRajaSalman.jpg" alt="profile nav"></img>
+            <img className="profile-nav" src={rajaSalman} alt="profile nav"></img>
             <span className="name-nav">{userName}</span>
           </Nav.Link>
           </ul>
@@ -87,7 +90,7 @@ const Navbars2 = () => {
               <div className="text">Untuk request barang bisa dilakukan melalui chat.</div>
               <div className="button">
                 <a href="https://wa.me/6288221500153">
-                  <img style={{ width: "125px" }} src="/src/assets/img/whatsapp.png" alt="WhatsApp Logo"></img>
+                  <img style={{ width: "125px" }} src={logoWA} alt="WhatsApp Logo"></img>
                   <div className="modal-button">
                     <span>Chat Penjual</span>
                   </div>

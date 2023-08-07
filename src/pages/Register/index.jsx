@@ -5,7 +5,7 @@ import Logo from "../../assets/img/LogoHalalECommerce-transformed.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Styles from "./index.module.css";
 import Form from "react-bootstrap/Form";
-import Gundambg from "../../assets/img/LoginImageKurma.jpg";
+import Kurma from "../../assets/img/LoginImageKurma.jpg";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../utils/constants";
 import axios from "axios";
@@ -72,7 +72,7 @@ const Register = () => {
           <div className=" mb-2 section-one">
             <h1 className="mb-5">DAFTAR</h1>
             <img
-              src={"/src/assets/img/LoginImageKurma.jpg"}
+              src={Kurma}
               alt="Dragon Ball Logo"
               className="DBallImg"
             />

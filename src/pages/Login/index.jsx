@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { API_URL } from "../../utils/constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Kurma from "../../assets/img/LoginImageKurma.jpg"
+import LogoHalal from "../../assets/img/LogoHalalECommerce.png"
 import swal from "sweetalert";
 import Footers from "../../components/footer/footer";
 
@@ -64,7 +66,7 @@ export const Login = () => {
       <Row className="Login">
         <Col className="Col1">
           <div className=" mb-2 section-one">
-            <img src={"/src/assets/img/LoginImageKurma.jpg"} alt="Dragon Ball Logo" className="DBallImg"/>
+            <img src={Kurma} alt="Dragon Ball Logo" className="DBallImg"/>
             <p className="tokyo-text">
               Halal E-Commerce adalah toko penjualan produk dari Timur Tengah seperti kurma,air zam-zam dan platform konten media yang menyajikan informasi.
               <br />
@@ -77,7 +79,7 @@ export const Login = () => {
           <div>
             <Form className="loginform" onSubmit={handleSubmit}>
               <div className="TokyoLogo">
-                <img src={("/src/assets/img/LogoHalalECommerce.png")} alt={"Tokyo Vibes Logo"} className="gambar"></img>
+                <img src={LogoHalal} alt={"Tokyo Vibes Logo"} className="gambar"></img>
               </div>
               <h3 className="masuk">Masuk</h3>
               <Form.Group className="formgroup">
