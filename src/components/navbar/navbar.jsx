@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Navbar, Nav, Container, Modal, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import rajaSalman from "../../assets/img/fotoRajaSalman.jpg"
-import logoIcon from "../../assets/img/LogoHalalECommerce-transformed.png"
+import logoIcon from "../../assets/img/iconwebhalal-transformed.png"
 import logoWA from "../../assets/img/whatsapp.png"
 // import PropTypes from 'prop-types';
 import "./navbar.css";
@@ -58,9 +58,6 @@ const Navbars = ({searchParams}) => {
     } else {
       return (
         <Nav className="justify-content-end " style={{ width: "100%" }}>
-          <Nav.Link as={Link} to="/about" style={{ color: "#fff", fontWeight: "400" }}>
-            Tentang Kami
-          </Nav.Link>
           <Nav.Link as={Link} to="/register" style={{ color: "#fff", fontWeight: "400" }}>
             Daftar
           </Nav.Link>
