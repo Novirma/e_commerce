@@ -250,7 +250,7 @@ const Home = () => {
                           <div className="items-name text">{item.name}</div>
                           <div className="mt-1">Harga Product</div>
                           <div className="mt-1" style={{ fontWeight: "700" }}>
-                            {rupiahLocale(item.price)}
+                            Rp.{rupiahLocale(item.price)}
                           </div>
                           <div className="mt-1 mb-1">Stock : {item.stock}</div>
                         </div>
