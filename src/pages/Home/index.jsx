@@ -166,7 +166,7 @@ const Home = () => {
                                   <div className="items-name text">{item.name}</div>
                                   <div className="mt-1">Harga Product</div>
                                   <div className="mt-1" style={{ fontWeight: "700" }}>
-                                    {rupiahLocale(item.price)}
+                                   Rp. {rupiahLocale(item.price)}
                                   </div>
                                   <div className="mt-1 mb-1">Stock : {item.stock}</div>
                                 </div>
@@ -200,7 +200,7 @@ const Home = () => {
                   <>
                     <div style={{ margin: 20, verticalAlign: "middle" }}>
                       <h2 className="mb-3 mt-2" style={{ marginLeft: 90 }}>
-                        List Action Figure
+                        List Product Halal E-Commerce
                       </h2>
                       <div className="d-flex flex-wrap justify-content-center ">
                         Tidak dapat menemukan barang yang anda cari.
